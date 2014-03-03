@@ -23,10 +23,10 @@
      <TextView 
          android:id="@id/android:empty"
          android:layout_width="match_parent" 
-         android:layout_height="match_parent"
+         android:layout_height="wrap_content"
          android:layout_alignParentTop="true"
          android:layout_centerHorizontal="true"
          android:background="@color/body_background"
-         android:text="@string/NoTask"/>
-
+         android:text="@string/NoTask" />
+     
 </RelativeLayout>
