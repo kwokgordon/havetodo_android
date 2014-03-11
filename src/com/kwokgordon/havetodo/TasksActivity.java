@@ -1,7 +1,9 @@
 package com.kwokgordon.havetodo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +27,17 @@ public class TasksActivity extends Activity {
 	
 	private static final String TASKS_URL = HaveTodo.HOST_URL + "/api/tasks.json";
 	
+	private String LOG_TAG = "TASK_ACTIVITY";
+	
 	private SharedPreferences mPreferences;
 
 	private ExpandableListView listContent;
 	private TodoAdapter listAdapter;
 	private List<String> groups;
-	private List<List<String>> childs;
+	private List<List<Map<String, String>>> childs;
+	
+	private String KEY_ID = "id";
+	private String KEY_NAME = "name";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,130 +67,42 @@ public class TasksActivity extends Activity {
 	    }
 
 	    @Override
-	        protected void onPostExecute(JSONObject json) {
-	            try {
-	            	
-	                groups = new ArrayList<String>();
-	                childs = new ArrayList<List<String>>();
+        protected void onPostExecute(JSONObject json) {
+            try {
+                groups = new ArrayList<String>();
+                childs = new ArrayList<List<Map<String,String>>>();
+                
+                Log.d(LOG_TAG, "before pull_task");
 
-	            	// Overdue Tasks
-	            	jsonTasks = json.getJSONObject("data").getJSONArray("overdue");
-	                length = jsonTasks.length();
-	                
-	                if (length > 0) {
-	                	groups.add("Overdue (" + length + ")");
+                pull_task("overdue", "Overdue", json, groups, childs);
 
-	                	List<String> overdue_list = new ArrayList<String>(length);
+                pull_task("today", "Today", json, groups, childs);
 
-		                for (int i = 0; i < length; i++) {
-		                	overdue_list.add(jsonTasks.getJSONObject(i).getString("name"));
-		                }
-		                
-		                childs.add(overdue_list);
-	                }
+                pull_task("tomorrow", "Tomorrow", json, groups, childs);
 
-	            	// Today Tasks
-	            	jsonTasks = json.getJSONObject("data").getJSONArray("today");
-	                length = jsonTasks.length();
-	                
-	                if (length > 0) {
-	                	groups.add("Today (" + length + ")");
+                pull_task("this_week", "This Week", json, groups, childs);
 
-	                	List<String> today_list = new ArrayList<String>(length);
+                pull_task("future", "Future", json, groups, childs);
 
-		                for (int i = 0; i < length; i++) {
-		                	today_list.add(jsonTasks.getJSONObject(i).getString("name"));
-		                }
-		                
-		                childs.add(today_list);
-	                }	                
+                pull_task("no_duedate", "No DueDate", json, groups, childs);
 
-	            	// Tomorrow Tasks
-	            	jsonTasks = json.getJSONObject("data").getJSONArray("tomorrow");
-	                length = jsonTasks.length();
-	                
-	                if (length > 0) {
-	                	groups.add("Tomorrow (" + length + ")");
+                pull_task("completed", "Completed", json, groups, childs);
 
-	                	List<String> tomorrow_list = new ArrayList<String>(length);
+                Log.d(LOG_TAG, "after pull_task");
+                
+                listAdapter = new TodoAdapter(TasksActivity.this, groups, childs);
 
-		                for (int i = 0; i < length; i++) {
-		                	tomorrow_list.add(jsonTasks.getJSONObject(i).getString("name"));
-		                }
-		                
-		                childs.add(tomorrow_list);
-	                }
+                Log.d(LOG_TAG, "before setAdapter");
+                
+                listContent.setAdapter(listAdapter);
 
-	            	// This Week Tasks
-	            	jsonTasks = json.getJSONObject("data").getJSONArray("this_week");
-	                length = jsonTasks.length();
-	                
-	                if (length > 0) {
-	                	groups.add("This Week (" + length + ")");
+                Log.d(LOG_TAG, "after setAdapter");
+                
+                for(int i = 0; i < listAdapter.getGroupCount(); i++)
+        			listContent.expandGroup(i);
 
-	                	List<String> this_week_list = new ArrayList<String>(length);
-
-		                for (int i = 0; i < length; i++) {
-		                	this_week_list.add(jsonTasks.getJSONObject(i).getString("name"));
-		                }
-		                
-		                childs.add(this_week_list);
-	                }	                
-
-	            	// Future Tasks
-	            	jsonTasks = json.getJSONObject("data").getJSONArray("future");
-	                length = jsonTasks.length();
-	                
-	                if (length > 0) {
-	                	groups.add("Future (" + length + ")");
-
-	                	List<String> future_list = new ArrayList<String>(length);
-
-		                for (int i = 0; i < length; i++) {
-		                	future_list.add(jsonTasks.getJSONObject(i).getString("name"));
-		                }
-		                
-		                childs.add(future_list);
-	                }	  	                
-
-	            	// No DueDate Tasks
-	            	jsonTasks = json.getJSONObject("data").getJSONArray("no_duedate");
-	                length = jsonTasks.length();
-	                
-	                if (length > 0) {
-	                	groups.add("No DueDate (" + length + ")");
-
-	                	List<String> no_duedate_list = new ArrayList<String>(length);
-
-		                for (int i = 0; i < length; i++) {
-		                	no_duedate_list.add(jsonTasks.getJSONObject(i).getString("name"));
-		                }
-		                
-		                childs.add(no_duedate_list);
-	                }	  	                
-
-	            	// Completed Tasks
-	            	jsonTasks = json.getJSONObject("data").getJSONArray("completed");
-	                length = jsonTasks.length();
-	                
-	                if (length > 0) {
-	                	groups.add("Completed (" + length + ")");
-
-	                	List<String> completed_list = new ArrayList<String>(length);
-
-		                for (int i = 0; i < length; i++) {
-		                	completed_list.add(jsonTasks.getJSONObject(i).getString("name"));
-		                }
-		                
-		                childs.add(completed_list);
-	                }	                
-	                
-	                listAdapter = new TodoAdapter(TasksActivity.this, groups, childs);
-	        		listContent.setAdapter(listAdapter);
-	        		for(int i = 0; i < groups.size(); i++)
-	        			listContent.expandGroup(i);
-
-	        		
+                Log.d(LOG_TAG, "after expandGroup");
+        		
 	            } catch (Exception e) {
 	            Toast.makeText(context, e.getMessage(),
 	                Toast.LENGTH_LONG).show();
@@ -190,16 +110,42 @@ public class TasksActivity extends Activity {
 	            super.onPostExecute(json);
 	        }
 	    }
+	    
+	    private void pull_task(String task_type_key, String task_type_name, 
+	    		JSONObject json, List<String> groups, List<List<Map<String, String>>> childs) {
+            try {
+	        	jsonTasks = json.getJSONObject("data").getJSONArray(task_type_key);
+	            length = jsonTasks.length();
+	            
+	            if (length > 0) {
+	            	groups.add(task_type_name + " (" + length + ")");
+	
+	            	List<Map<String,String>> task_list = new ArrayList<Map<String,String>>(length);
+	
+	                for (int i = 0; i < length; i++) {
+	                	Map<String,String> task_map = new HashMap<String,String>();
+	                	task_map.put(KEY_ID, jsonTasks.getJSONObject(i).getString(KEY_ID));
+	                	task_map.put(KEY_NAME, jsonTasks.getJSONObject(i).getString(KEY_NAME));
+	                	task_list.add(task_map);
+	                }
+	                
+	                childs.add(task_list);
+	            }
+	        } catch (Exception e) {
+		        Toast.makeText(context, e.getMessage(),
+		            Toast.LENGTH_LONG).show();
+		    }
+        }
 	}	
 
 	public class TodoAdapter extends BaseExpandableListAdapter {
 
 		private Context context;
 		private List<String> g;
-		private List<List<String>> c;
+		private List<List<Map<String, String>>> c;
 		private LayoutInflater inflater;
 
-		public TodoAdapter(Context context, List<String> g, List<List<String>> c) {
+		public TodoAdapter(Context context, List<String> g, List<List<Map<String, String>>> c) {
 			this.context = context;
 			this.g = g;
 			this.c = c;
@@ -207,7 +153,7 @@ public class TasksActivity extends Activity {
 			inflater = LayoutInflater.from(context);
 		}		
 		
-	    public Object getGroup(int groupPosition) {
+	    public String getGroup(int groupPosition) {
 	    	return g.get(groupPosition);
 	    }
 	    
@@ -220,7 +166,7 @@ public class TasksActivity extends Activity {
         	v = inflater.inflate(R.layout.layout_expandable_group, parent, false); 
 
 	        TextView tv = (TextView)v.findViewById(R.id.groupText);
-	        tv.setText((String) getGroup(groupPosition));
+	        tv.setText(getGroup(groupPosition));
 
 			return v;
 	    }
@@ -229,12 +175,13 @@ public class TasksActivity extends Activity {
 	        return g.size();
 	    }
 
-	    public Object getChild(int groupPosition, int childPosition) {
+	    public Map<String,String> getChild(int groupPosition, int childPosition) {
 	    	return c.get(groupPosition).get(childPosition);
 	    }
 
 		public long getChildId(int groupPosition, int childPosition) {
 	        return (long)childPosition;
+//	        return Long.valueOf(c.get(groupPosition).get(childPosition).get(KEY_ID));
 	    }
 		
 		public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
@@ -243,7 +190,8 @@ public class TasksActivity extends Activity {
             v = inflater.inflate(R.layout.layout_expandable_child, parent, false); 
 
             TextView tv = (TextView)v.findViewById(R.id.childText);
-	        tv.setText(c.get(groupPosition).get(childPosition));
+	        tv.setText(getChild(groupPosition, childPosition).get(KEY_NAME));
+//	        tv.setText(c.get(groupPosition).get(childPosition).get(KEY_NAME));
 	        
 	        return v;
 	    }
