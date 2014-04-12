@@ -17,4 +17,31 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="IncompleteTaskCheckBoxView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/TaskMinHeight</item>
+        <item name="android:background">@color/body_background</item>
+        <item name="android:textSize">@dimen/TaskTextSize</item>
+        <item name="android:textColor">@color/IncompleteTaskTextColor</item>
+    </style>
+    
+    <style name="CompletedTaskCheckBoxView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/TaskMinHeight</item>
+        <item name="android:background">@color/body_background</item>
+        <item name="android:textSize">@dimen/TaskTextSize</item>
+        <item name="android:textColor">@color/CompletedTaskTextColor</item>
+    </style>
+    
+    <style name="CompletedHeader">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">#888888</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">@dimen/HeaderTextSize</item>
+    </style>
+        
+    
 </resources>

@@ -16,5 +16,7 @@
     <string name="logout">Log out</string>
 
     <string name="NoTask">No Task</string> 
+
+    <string name="CheckBoxImage">Check Box Image</string>
         
 </resources>
