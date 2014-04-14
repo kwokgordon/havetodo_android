@@ -132,7 +132,7 @@ public class RegisterActivity extends Activity {
 	                // launch the HomeActivity and close this one
 //	                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
 //	                startActivity(intent);
-//	                finish();
+	                finish();
 	            }
 	            Toast.makeText(context, json.getString("info"), Toast.LENGTH_LONG).show();
 	        } catch (Exception e) {

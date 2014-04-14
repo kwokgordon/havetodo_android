@@ -40,7 +40,6 @@ public class MainActivity extends Activity {
         // the SharedPreferences
         editor.putString("AuthToken", "");
         editor.commit();
-		
 	}
 	
 	public void onTasksButtonClick(View view) {

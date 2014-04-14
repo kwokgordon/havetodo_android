@@ -18,5 +18,10 @@
     <string name="NoTask">No Task</string> 
 
     <string name="CheckBoxImage">Check Box Image</string>
-        
+
+    <string name="AddTask">Add Task</string> 
+    <string name="RefreshTasks">Refresh Tasks</string> 
+
+    <string name="task_hint">Task Name</string> 
+    
 </resources>

@@ -7,5 +7,8 @@
     <dimen name="TaskMinHeight">50dp</dimen>
     <dimen name="HeaderTextSize">15dp</dimen>
     <dimen name="TaskTextSize">20dp</dimen>
+
+    <dimen name="AddTaskTextSize">25dp</dimen>
+    <dimen name="AddTaskFieldMargin">5dp</dimen>
     
 </resources>

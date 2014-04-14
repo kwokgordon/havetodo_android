@@ -117,12 +117,12 @@ public class LoginActivity extends Activity {
 	                editor.putString("AuthToken", json.getJSONObject("data").getString("auth_token"));
 	                editor.commit();
 
-		            Toast.makeText(context, json.getJSONObject("data").getString("auth_token"), Toast.LENGTH_LONG).show();
+//		            Toast.makeText(context, json.getJSONObject("data").getString("auth_token"), Toast.LENGTH_LONG).show();
 	                
 	                // launch the HomeActivity and close this one
-//	                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//	                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 //	                startActivity(intent);
-//	                finish();
+	                finish();
 	            }
 	            Toast.makeText(context, json.getString("info"), Toast.LENGTH_LONG).show();
 	        } catch (Exception e) {
