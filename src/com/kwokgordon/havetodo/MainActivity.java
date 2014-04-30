@@ -45,5 +45,9 @@ public class MainActivity extends Activity {
 	public void onTasksButtonClick(View view) {
 		startActivity(new Intent(MainActivity.this, TasksActivity.class));
 	}
+
+	public void onTasksCursorButtonClick(View view) {
+		startActivity(new Intent(MainActivity.this, TasksCursorActivity.class));
+	}
 	
 }

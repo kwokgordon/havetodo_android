@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/add_task"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_add"
+        android:title="@string/AddTask"/>
+    
+    <item
+        android:id="@+id/refresh_tasks"
+        android:orderInCategory="200"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/RefreshTasks"/>
+    
+</menu>

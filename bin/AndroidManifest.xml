@@ -39,7 +39,22 @@
             android:parentActivityName="com.kwokgordon.havetodo.MainActivity"
             android:label="@string/app_name" >
         </activity>
-       
+        <activity
+            android:name="com.kwokgordon.havetodo.TasksCursorActivity"
+            android:parentActivityName="com.kwokgordon.havetodo.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+		<service
+            android:name="com.example.android.syncadapter.AuthenticatorService">
+        	<intent-filter>
+            	<action android:name="android.accounts.AccountAuthenticator"/>
+        	</intent-filter>
+        	<meta-data
+            	android:name="android.accounts.AccountAuthenticator"
+            	android:resource="@xml/authenticator" />
+	    </service>        
+        
     </application>
 
 </manifest>
